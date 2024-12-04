@@ -2,10 +2,10 @@
 import { useState } from 'react'
 
 const AGE_RANGES = [
-  { value: '60-70', label: '60-70 years' },
-  { value: '70-80', label: '70-80 years' },
-  { value: '80-90', label: '80-90 years' },
-  { value: '90+', label: '90+ years' },
+  { value: '60-70', label: '60-70 years old' },
+  { value: '70-80', label: '70-80 years old' },
+  { value: '80-90', label: '80-90 years old' },
+  { value: '90+', label: '90+ years old' },
 ]
 
 const AGE_BANDS = [
@@ -21,12 +21,209 @@ const HEALTH_STATUS = [
   { id: 'adls', label: 'Needs help with ADLs' },
 ]
 
+const COUNTRY = [
+  { value: 'AFG', label: 'Afghanistan' },
+  { value: 'ALB', label: 'Albania' },
+  { value: 'DZA', label: 'Algeria' },
+  { value: 'AND', label: 'Andorra' },
+  { value: 'AGO', label: 'Angola' },
+  { value: 'ATG', label: 'Antigua and Barbuda' },
+  { value: 'ARG', label: 'Argentina' },
+  { value: 'ARM', label: 'Armenia' },
+  { value: 'AUS', label: 'Australia' },
+  { value: 'AUT', label: 'Austria' },
+  { value: 'AZE', label: 'Azerbaijan' },
+  { value: 'BHS', label: 'Bahamas' },
+  { value: 'BHR', label: 'Bahrain' },
+  { value: 'BGD', label: 'Bangladesh' },
+  { value: 'BRB', label: 'Barbados' },
+  { value: 'BLR', label: 'Belarus' },
+  { value: 'BEL', label: 'Belgium' },
+  { value: 'BLZ', label: 'Belize' },
+  { value: 'BEN', label: 'Benin' },
+  { value: 'BTN', label: 'Bhutan' },
+  { value: 'BOL', label: 'Bolivia' },
+  { value: 'BIH', label: 'Bosnia and Herzegovina' },
+  { value: 'BWA', label: 'Botswana' },
+  { value: 'BRA', label: 'Brazil' },
+  { value: 'BRN', label: 'Brunei' },
+  { value: 'BGR', label: 'Bulgaria' },
+  { value: 'BFA', label: 'Burkina Faso' },
+  { value: 'BDI', label: 'Burundi' },
+  { value: 'CPV', label: 'Cabo Verde' },
+  { value: 'KHM', label: 'Cambodia' },
+  { value: 'CMR', label: 'Cameroon' },
+  { value: 'CAN', label: 'Canada' },
+  { value: 'CAF', label: 'Central African Republic' },
+  { value: 'TCD', label: 'Chad' },
+  { value: 'CHL', label: 'Chile' },
+  { value: 'CHN', label: 'China' },
+  { value: 'COL', label: 'Colombia' },
+  { value: 'COM', label: 'Comoros' },
+  { value: 'COG', label: 'Congo (Congo-Brazzaville)' },
+  { value: 'CRI', label: 'Costa Rica' },
+  { value: 'CIV', label: 'Côte d’Ivoire' },
+  { value: 'HRV', label: 'Croatia' },
+  { value: 'CUB', label: 'Cuba' },
+  { value: 'CYP', label: 'Cyprus' },
+  { value: 'CZE', label: 'Czechia (Czech Republic)' },
+  { value: 'DNK', label: 'Denmark' },
+  { value: 'DJI', label: 'Djibouti' },
+  { value: 'DMA', label: 'Dominica' },
+  { value: 'DOM', label: 'Dominican Republic' },
+  { value: 'ECU', label: 'Ecuador' },
+  { value: 'EGY', label: 'Egypt' },
+  { value: 'SLV', label: 'El Salvador' },
+  { value: 'GNQ', label: 'Equatorial Guinea' },
+  { value: 'ERI', label: 'Eritrea' },
+  { value: 'EST', label: 'Estonia' },
+  { value: 'SWZ', label: 'Eswatini (fmr. "Swaziland")' },
+  { value: 'ETH', label: 'Ethiopia' },
+  { value: 'FJI', label: 'Fiji' },
+  { value: 'FIN', label: 'Finland' },
+  { value: 'FRA', label: 'France' },
+  { value: 'GAB', label: 'Gabon' },
+  { value: 'GMB', label: 'Gambia' },
+  { value: 'GEO', label: 'Georgia' },
+  { value: 'DEU', label: 'Germany' },
+  { value: 'GHA', label: 'Ghana' },
+  { value: 'GRC', label: 'Greece' },
+  { value: 'GRD', label: 'Grenada' },
+  { value: 'GTM', label: 'Guatemala' },
+  { value: 'GIN', label: 'Guinea' },
+  { value: 'GNB', label: 'Guinea-Bissau' },
+  { value: 'GUY', label: 'Guyana' },
+  { value: 'HTI', label: 'Haiti' },
+  { value: 'HND', label: 'Honduras' },
+  { value: 'HUN', label: 'Hungary' },
+  { value: 'ISL', label: 'Iceland' },
+  { value: 'IND', label: 'India' },
+  { value: 'IDN', label: 'Indonesia' },
+  { value: 'IRN', label: 'Iran' },
+  { value: 'IRQ', label: 'Iraq' },
+  { value: 'IRL', label: 'Ireland' },
+  { value: 'ISR', label: 'Israel' },
+  { value: 'ITA', label: 'Italy' },
+  { value: 'JAM', label: 'Jamaica' },
+  { value: 'JPN', label: 'Japan' },
+  { value: 'JOR', label: 'Jordan' },
+  { value: 'KAZ', label: 'Kazakhstan' },
+  { value: 'KEN', label: 'Kenya' },
+  { value: 'KIR', label: 'Kiribati' },
+  { value: 'KWT', label: 'Kuwait' },
+  { value: 'KGZ', label: 'Kyrgyzstan' },
+  { value: 'LAO', label: 'Laos' },
+  { value: 'LVA', label: 'Latvia' },
+  { value: 'LBN', label: 'Lebanon' },
+  { value: 'LSO', label: 'Lesotho' },
+  { value: 'LBR', label: 'Liberia' },
+  { value: 'LBY', label: 'Libya' },
+  { value: 'LIE', label: 'Liechtenstein' },
+  { value: 'LTU', label: 'Lithuania' },
+  { value: 'LUX', label: 'Luxembourg' },
+  { value: 'MDG', label: 'Madagascar' },
+  { value: 'MWI', label: 'Malawi' },
+  { value: 'MYS', label: 'Malaysia' },
+  { value: 'MDV', label: 'Maldives' },
+  { value: 'MLI', label: 'Mali' },
+  { value: 'MLT', label: 'Malta' },
+  { value: 'MHL', label: 'Marshall Islands' },
+  { value: 'MRT', label: 'Mauritania' },
+  { value: 'MUS', label: 'Mauritius' },
+  { value: 'MEX', label: 'Mexico' },
+  { value: 'FSM', label: 'Micronesia' },
+  { value: 'MDA', label: 'Moldova' },
+  { value: 'MCO', label: 'Monaco' },
+  { value: 'MNG', label: 'Mongolia' },
+  { value: 'MNE', label: 'Montenegro' },
+  { value: 'MAR', label: 'Morocco' },
+  { value: 'MOZ', label: 'Mozambique' },
+  { value: 'MMR', label: 'Myanmar (formerly Burma)' },
+  { value: 'NAM', label: 'Namibia' },
+  { value: 'NRU', label: 'Nauru' },
+  { value: 'NPL', label: 'Nepal' },
+  { value: 'NLD', label: 'Netherlands' },
+  { value: 'NZL', label: 'New Zealand' },
+  { value: 'NIC', label: 'Nicaragua' },
+  { value: 'NER', label: 'Niger' },
+  { value: 'NGA', label: 'Nigeria' },
+  { value: 'MKD', label: 'North Macedonia' },
+  { value: 'NOR', label: 'Norway' },
+  { value: 'OMN', label: 'Oman' },
+  { value: 'PAK', label: 'Pakistan' },
+  { value: 'PLW', label: 'Palau' },
+  { value: 'PSE', label: 'Palestine State' },
+  { value: 'PAN', label: 'Panama' },
+  { value: 'PNG', label: 'Papua New Guinea' },
+  { value: 'PRY', label: 'Paraguay' },
+  { value: 'PER', label: 'Peru' },
+  { value: 'PHL', label: 'Philippines' },
+  { value: 'POL', label: 'Poland' },
+  { value: 'PRT', label: 'Portugal' },
+  { value: 'QAT', label: 'Qatar' },
+  { value: 'ROU', label: 'Romania' },
+  { value: 'RUS', label: 'Russia' },
+  { value: 'RWA', label: 'Rwanda' },
+  { value: 'KNA', label: 'Saint Kitts and Nevis' },
+  { value: 'LCA', label: 'Saint Lucia' },
+  { value: 'VCT', label: 'Saint Vincent and the Grenadines' },
+  { value: 'WSM', label: 'Samoa' },
+  { value: 'SMR', label: 'San Marino' },
+  { value: 'STP', label: 'Sao Tome and Principe' },
+  { value: 'SAU', label: 'Saudi Arabia' },
+  { value: 'SEN', label: 'Senegal' },
+  { value: 'SRB', label: 'Serbia' },
+  { value: 'SYC', label: 'Seychelles' },
+  { value: 'SLE', label: 'Sierra Leone' },
+  { value: 'SGP', label: 'Singapore' },
+  { value: 'SVK', label: 'Slovakia' },
+  { value: 'SVN', label: 'Slovenia' },
+  { value: 'SLB', label: 'Solomon Islands' },
+  { value: 'SOM', label: 'Somalia' },
+  { value: 'ZAF', label: 'South Africa' },
+  { value: 'KOR', label: 'South Korea' },
+  { value: 'SSD', label: 'South Sudan' },
+  { value: 'ESP', label: 'Spain' },
+  { value: 'LKA', label: 'Sri Lanka' },
+  { value: 'SDN', label: 'Sudan' },
+  { value: 'SUR', label: 'Suriname' },
+  { value: 'SWE', label: 'Sweden' },
+  { value: 'CHE', label: 'Switzerland' },
+  { value: 'SYR', label: 'Syria' },
+  { value: 'TWN', label: 'Taiwan' },
+  { value: 'TJK', label: 'Tajikistan' },
+  { value: 'TZA', label: 'Tanzania' },
+  { value: 'THA', label: 'Thailand' },
+  { value: 'TLS', label: 'Timor-Leste' },
+  { value: 'TGO', label: 'Togo' },
+  { value: 'TON', label: 'Tonga' },
+  { value: 'TTO', label: 'Trinidad and Tobago' },
+  { value: 'TUN', label: 'Tunisia' },
+  { value: 'TUR', label: 'Turkey' },
+  { value: 'TKM', label: 'Turkmenistan' },
+  { value: 'TUV', label: 'Tuvalu' },
+  { value: 'UGA', label: 'Uganda' },
+  { value: 'UKR', label: 'Ukraine' },
+  { value: 'ARE', label: 'United Arab Emirates' },
+  { value: 'GBR', label: 'United Kingdom' },
+  { value: 'USA', label: 'United States of America' },
+  { value: 'URY', label: 'Uruguay' },
+  { value: 'UZB', label: 'Uzbekistan' },
+  { value: 'VUT', label: 'Vanuatu' },
+  { value: 'VAT', label: 'Vatican City' },
+  { value: 'VEN', label: 'Venezuela' },
+  { value: 'VNM', label: 'Vietnam' },
+  { value: 'YEM', label: 'Yemen' },
+  { value: 'ZMB', label: 'Zambia' },
+  { value: 'ZWE', label: 'Zimbabwe' }
+];
+
 export default function ProfileForm({ onSubmit }) {
   const [formData, setFormData] = useState({
     ageRange: '',
     ageBand: '',
     country: '',
-    healthStatus: [],
+    healthStatus: '',
   })
 
   const handleSubmit = (e) => {
@@ -58,33 +255,27 @@ export default function ProfileForm({ onSubmit }) {
 
       {/* Age Band */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label 
+          htmlFor="ageBand" 
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
           Age Band
         </label>
-        <div className="grid grid-cols-2 gap-4">
+        <select
+          id="ageBand"
+          value={formData.ageBand}
+          onChange={(e) => setFormData({ ...formData, ageBand: e.target.value })}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                  focus:border-indigo-500 focus:ring-indigo-500 
+                  bg-white py-2 px-3 text-base"
+        >
+          <option value="">Select age band</option>
           {AGE_BANDS.map((band) => (
-            <label
-              key={band.value}
-              className={`
-                flex items-center justify-center px-4 py-2 border rounded-md cursor-pointer
-                ${formData.ageBand === band.value
-                  ? 'bg-indigo-50 border-indigo-500 text-indigo-600'
-                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                }
-              `}
-            >
-              <input
-                type="radio"
-                name="ageBand"
-                value={band.value}
-                checked={formData.ageBand === band.value}
-                onChange={(e) => setFormData({ ...formData, ageBand: e.target.value })}
-                className="sr-only"
-              />
-              <span>{band.label}</span>
-            </label>
+            <option key={band.value} value={band.value}>
+              {band.label}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
       {/* Country */}
@@ -92,14 +283,21 @@ export default function ProfileForm({ onSubmit }) {
         <label htmlFor="country" className="block text-sm font-medium text-gray-700">
           Country
         </label>
-        <input
-          type="text"
+        <select
           id="country"
           value={formData.country}
-          onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          placeholder="Enter country name"
-        />
+          onChange={(e) => setFormData({...formData, country: e.target.value})}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                  focus:border-indigo-500 focus:ring-indigo-500 
+                  bg-white py-2 px-3 text-base"
+        >
+          <option value="">Select country</option>
+          {COUNTRY.map((country) => (
+              <option key={country.value} value={country.value}>
+                {country.label}
+              </option>
+          ))}
+        </select>
       </div>
 
       {/* Health Status */}
@@ -111,16 +309,14 @@ export default function ProfileForm({ onSubmit }) {
           {HEALTH_STATUS.map((status) => (
             <label key={status.id} className="flex items-center space-x-3">
               <input
-                type="checkbox"
+                type="radio"
+                name="healthStatus"  // Added name attribute for proper radio group behavior
                 value={status.id}
-                checked={formData.healthStatus.includes(status.id)}
+                checked={formData.healthStatus === status.id}  // Changed from includes to direct comparison
                 onChange={(e) => {
-                  const value = e.target.value
                   setFormData({
                     ...formData,
-                    healthStatus: e.target.checked
-                      ? [...formData.healthStatus, value]
-                      : formData.healthStatus.filter((s) => s !== value),
+                    healthStatus: e.target.value  // Simplified to store single value
                   })
                 }}
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
