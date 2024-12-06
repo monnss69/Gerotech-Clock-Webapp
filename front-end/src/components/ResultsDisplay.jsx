@@ -1,39 +1,8 @@
 // src/components/ResultsDisplay.jsx
-export default function ResultsDisplay() {
-    // Mock data - replace with actual data later
-    const mockData = {
-      persona: {
-        summary: "Active senior living in Jakarta, Indonesia. Regular social media user who keeps in touch with family through WhatsApp.",
-        yearOfBirth: 1962,
-      },
-      historicalEvents: [
-        {
-          year: "1970s",
-          event: "New Order Era",
-          description: "Experienced economic growth and development during childhood"
-        },
-        {
-          year: "1998",
-          event: "Asian Financial Crisis",
-          description: "Witnessed major economic and political changes"
-        },
-        {
-          year: "2000s",
-          event: "Digital Revolution",
-          description: "Adapted to mobile phones and internet technology"
-        }
-      ],
-      technology: {
-        familiarity: "Moderate",
-        devices: ["Smartphone", "Basic Computer", "Digital TV"],
-        challenges: ["Complex apps", "Small text", "Fast updates"]
-      },
-      health: {
-        current: "Generally healthy with some age-related conditions",
-        conditions: ["Mild arthritis", "Reading glasses needed"],
-        predictions: ["May need mobility support in 5-7 years", "Regular health monitoring recommended"]
-      }
-    };
+export default function ResultsDisplay({ data }) {
+  if (!data) {
+    return null;
+  }
   
     return (
       <div className="space-y-6">

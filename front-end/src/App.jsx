@@ -4,18 +4,27 @@ import ProfileForm from './components/ProfileForm'
 import ResultsDisplay from './components/ResultsDisplay'
 import EmptyState from './components/EmptyState'
 import LoadingState from './components/LoadingState'
+import { generatePersona } from './services/claudeService'
 
 function App() {
   const [showResults, setShowResults] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [personaData, setPersonaData] = useState(null)
+  const [error, setError] = useState(null)
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = async (formData) => {
     setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
+    setError(null)
+    try {
+      const data = await generatePersona(formData)
+      setPersonaData(data)
       setShowResults(true)
+    } catch (err) {
+      setError('Failed to generate persona. Please try again.')
+      console.error(err)
+    } finally {
       setIsLoading(false)
-    }, 1500)
+    }
   }
 
   return (
@@ -37,7 +46,7 @@ function App() {
             {isLoading ? (
               <LoadingState />
             ) : showResults ? (
-              <ResultsDisplay />
+              <ResultsDisplay data={personaData} />
             ) : (
               <EmptyState />
             )}
