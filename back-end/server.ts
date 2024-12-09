@@ -1,20 +1,44 @@
 import 'dotenv/config';
-import express from 'express';
+import express, { json } from 'express';
+import { Express, Request, Response } from 'express-serve-static-core';
 import cors from 'cors';
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from "openai";
 
-const app = express();
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// Define interfaces for type safety
+interface FormData {
+  ageRange: string;
+  ageBand: string;
+  country: string;
+  healthStatus: string;
+  gender?: string;
+  livingArrangement?: string;
+}
 
+interface RequestBody {
+  formData: FormData;
+}
+
+const app: Express = express();
 app.use(cors());
 app.use(express.json());
 
-app.post('/api/claude', async (req, res) => {
+// Ensure OPENAI_API_KEY exists
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error('OPENAI_API_KEY is not defined in environment variables');
+}
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+app.post('/api/openai', async (req: Request<{}, {}, RequestBody>, res: Response) => {
   try {
     const { formData } = req.body;
-    
+
+    if (!formData) {
+      return res.status(400).json({ error: 'Form data is required' });
+    }
+
     // Create a demographic-focused prompt
     const prompt = `Generate a demographic profile for the following elderly population segment:
     - Age Range: ${formData.ageRange}
@@ -32,10 +56,12 @@ app.post('/api/claude', async (req, res) => {
 
     Do NOT create a specific fictional person or individual story. Instead, provide demographic insights and general characteristics.`;
 
-    const message = await anthropic.messages.create({
-      model: 'claude-3-sonnet-20240229',
-      max_tokens: 1024,
-      system: `You are an AI assistant that generates demographic profiles for elderly populations. Your responses should be in the following JSON format:
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `You are an AI assistant that generates demographic profiles for elderly populations. Based on the information about the person .Your responses should be in the following JSON format:
       {
         "persona": {
           "summary": "General demographic description of this population segment",
@@ -65,24 +91,35 @@ app.post('/api/claude', async (req, res) => {
       - Focus on demographic trends and patterns
       - Provide general characteristics of the population segment
       - Base information on demographic data and research
-      - Keep descriptions general and representative of the group`,
-      messages: [
+      - Keep descriptions general and representative of the group` 
+        },
         {
-          role: 'user',
+          role: "user",
           content: prompt,
-        }
+        },
       ],
-      temperature: 0.7,
+      temperature: 0.7, // Added for more consistent outputs
     });
 
     // Parse the response to ensure it's valid JSON
-    const responseText = message.content[0].text;
-    const jsonResponse = JSON.parse(responseText);
+    const responseText = completion.choices[0].message.content;
+    if (!responseText) {
+      throw new Error('Empty response from AI');
+    }
 
-    res.json(jsonResponse);
+    try {
+      const jsonResponse = JSON.parse(responseText);
+      res.json(jsonResponse);
+    } catch (parseError) {
+      console.error('Error parsing AI response:', parseError);
+      res.status(500).json({ error: 'Invalid response format from AI' });
+    }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Failed to generate persona' });
+    console.error('Error generating demographic profile:', error);
+    res.status(500).json({ 
+      error: 'Internal Server Error',
+      message: error instanceof Error ? error.message : 'Unknown error occurred'
+    });
   }
 });
 
