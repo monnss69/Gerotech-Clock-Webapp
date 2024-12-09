@@ -4,7 +4,7 @@ import ProfileForm from './components/ProfileForm'
 import ResultsDisplay from './components/ResultsDisplay'
 import EmptyState from './components/EmptyState'
 import LoadingState from './components/LoadingState'
-import { generatePersona } from './services/claudeService'
+import { generatePersona } from './services/gptService'
 
 function App() {
   const [showResults, setShowResults] = useState(false)
